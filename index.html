@@ -54,9 +54,8 @@
         <button id="cancelEdit">Cancelar</button>
     </div>
 
-    <!-- Tabela de frutas -->
-    <h2>Lista de Frutas</h2>
-    <table>
+    <!-- Tabela original para visualização na tela -->
+    <table id="fruitTable" class="screen-only">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -65,10 +64,14 @@
             </tr>
         </thead>
         <tbody id="fruitTableBody">
-            <!-- Frutas serão inseridas aqui -->
+            <!-- Conteúdo da tabela -->
         </tbody>
     </table>
 
-    <script src="scripts.js"></script>
+    
+    <!-- Botão para imprimir -->
+    <button onclick="window.print()">Imprimir</button>
+
+    <script src="scripts.js"></script> <!-- Seu arquivo JavaScript -->
 </body>
 </html>

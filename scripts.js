@@ -201,6 +201,57 @@ function printPage() {
     window.print(); // Chama a função de impressão do navegador
 }
 
+function splitTableForPrint() {
+    const tableBody = document.getElementById("fruitTableBody"); // Tabela original
+    const rows = Array.from(tableBody.children); // Converter filhos em array
+
+    const midpoint = Math.floor(rows.length / 2); // Meio da tabela
+    
+    const firstHalf = rows.slice(0, midpoint); // Primeira metade
+    const secondHalf = rows.slice(midpoint); // Segunda metade
+
+    const printOnlyDiv = document.querySelector(".print-only");
+    
+    const firstTable = document.createElement("table");
+    const secondTable = document.createElement("table");
+
+    // Criar cabeçalhos para as tabelas
+    const createHeader = () => {
+        const thead = document.createElement("thead");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <th>Nome</th>
+            <th>PLU</th>
+            <th>Imagem</th>
+        `;
+        thead.appendChild(tr);
+        return thead;
+    };
+
+    firstTable.appendChild(createHeader());
+    secondTable.appendChild(createHeader());
+
+    const appendRowsToTable = (table, rows) => {
+        const tbody = document.createElement("tbody");
+        rows.forEach(row => tbody.appendChild(row.cloneNode(true)));
+        table.appendChild(tbody);
+    };
+
+    appendRowsToTable(firstTable, firstHalf);
+    appendRowsToTable(secondTable, secondHalf);
+
+    // Adicionar as tabelas de impressão
+    printOnlyDiv.appendChild(firstTable);
+    printOnlyDiv.appendChild(secondTable);
+}
+
+// Adicionar evento para dividir a tabela antes de imprimir
+document.querySelector("button").addEventListener("click", () => {
+    splitTableForPrint();
+    window.print(); // Chama a função de impressão
+});
+
+
 // Configurações de eventos para adicionar, editar, excluir e imprimir
 document.getElementById('addFruit').addEventListener('click', addFruit);
 document.getElementById('editFruit').addEventListener('click', openEditModal);
