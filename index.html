@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Frutas</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Lista de Frutas</h1>
+    <button id="printPage">Imprimir Página</button>
+
+    <!-- Formulário para adicionar frutas -->
+    <div>
+        <label for="fruitName">Nome:</label>
+        <input type="text" id="fruitName" placeholder="Digite o nome da fruta">
+        
+        <label para="fruitPLU">PLU:</label>
+        <input type="text" id="fruitPLU" placeholder="Digite o código PLU">
+        
+        <label para="fruitImage">Imagem (URL):</label>
+        <input type="text" id="fruitImage" placeholder="URL da imagem da fruta">
+        
+        <button id="addFruit">Adicionar Fruta</button>
+    </div>
+
+    <!-- Campo para buscar fruta para edição -->
+    <h2>Editar Fruta pelo PLU</h2>
+    <div>
+        <label para="editPLU">PLU para editar:</label>
+        <input type="text" id="editPLU" placeholder="Digite o PLU para buscar a fruta para edição">
+        <button id="editFruit">Editar Fruta</button>
+    </div>
+
+    <!-- Campo para excluir fruta pelo PLU -->
+    <h2>Excluir Fruta pelo PLU</h2>
+    <div>
+        <label para="deletePLU">PLU para excluir:</label>
+        <input type="text" id="deletePLU" placeholder="Digite o PLU para excluir a fruta">
+        <button id="deleteFruit">Excluir Fruta</button>
+    </div>
+
+    <!-- Modal para edição de frutas -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="editFruitModal">
+        <h2>Editar Fruta</h2>
+        <div>
+            <label para="editFruitName">Nome:</label>
+            <input type="text" id="editFruitName">
+            
+            <label para="editFruitImage">Imagem (URL):</label>
+            <input type="text" id="editFruitImage">
+        </div>
+        <button id="saveFruit">Salvar Alterações</button>
+        <button id="cancelEdit">Cancelar</button>
+    </div>
+
+    <!-- Tabela de frutas -->
+    <h2>Lista de Frutas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>PLU</th>
+                <th>Imagem</th>
+            </tr>
+        </thead>
+        <tbody id="fruitTableBody">
+            <!-- Frutas serão inseridas aqui -->
+        </tbody>
+    </table>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

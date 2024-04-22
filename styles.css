@@ -1,0 +1,73 @@
+/* Arquivo: styles.css */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+div {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 7px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+img {
+    max-width: 100px;
+}
+
+/* Estilos para impressão */
+@media print {
+    /* Ocultar formulários e botões durante a impressão */
+    div,
+    button,
+    #addFruit,
+    #printPage {
+        display: none;
+    }
+
+    /* Reduzir margens para maximizar a área de impressão */
+    body {
+        margin: 10px;
+    }
+}
