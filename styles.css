@@ -62,8 +62,11 @@ img {
     div,
     button,
     #addFruit,
-    #printPage {
+    #printPage,
+    h1,
+    h2{
         display: none;
+       
     }
 
     /* Reduzir margens para maximizar a área de impressão */
