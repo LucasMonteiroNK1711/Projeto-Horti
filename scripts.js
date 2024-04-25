@@ -1,61 +1,70 @@
-let db;
+let db; // Variável global para armazenar a referência ao banco de dados
 
-// Função para inicializar o IndexedDB
-function initDB() {
-    const request = indexedDB.open('fruitDB', 1);
+// Abrir o IndexedDB
+const request = indexedDB.open("FruitDB", 1); // Banco de dados "FruitDB" na versão 1
 
-    request.onupgradeneeded = function(event) {
-        db = event.target.result;
+request.onupgradeneeded = function (event) {
+    db = event.target.result; // Obter o banco de dados
+    const fruitStore = db.createObjectStore("fruits", { keyPath: "plu" }); // Object store para "fruits"
+    fruitStore.createIndex("name", "name", { unique: true }); // Índice para ordenação por nome
+    fruitStore.createIndex("plu", "plu", { unique: false }); // Índice para ordenação por PLU
+};
 
-        if (!db.objectStoreNames.contains('fruits')) {
-            const fruitStore = db.createObjectStore('fruits', { keyPath: 'plu' });
-            fruitStore.createIndex('name', 'name', { unique: false });
-            fruitStore.createIndex('image', 'image', { unique: false });
-        }
-    };
+// Se o banco de dados foi aberto com sucesso
+request.onsuccess = function (event) {
+    db = event.target.result; // Armazena a referência ao banco de dados
+    console.log("IndexedDB aberto com sucesso.");
+    loadFruitTable(); // Chama a função para carregar a tabela após abertura bem-sucedida
+};
 
-    request.onsuccess = function(event) {
-        db = event.target.result;
-        loadFruitTable(); // Carrega a tabela ao inicializar
-    };
+// Se houver erro ao abrir o banco de dados
+request.onerror = function (event) {
+    console.error("Erro ao abrir o IndexedDB:", event.target.errorCode); // Exibe uma mensagem de erro
+};
 
-    request.onerror = function(event) {
-        console.error("Erro ao abrir o IndexedDB:", event.target.errorCode);
-    };
-}
 
 // Função para carregar a tabela de frutas do IndexedDB
 function loadFruitTable() {
-    const transaction = db.transaction(['fruits'], 'readonly'); // Transação de leitura
-    const fruitStore = transaction.objectStore('fruits'); // Objeto de armazenamento "fruits"
-    
-    const request = fruitStore.openCursor(); // Abre um cursor para percorrer as frutas
-    
-    const tableBody = document.getElementById('fruitTableBody'); // Corpo da tabela
+    if (!db) {
+        console.error("IndexedDB não está disponível."); // Verifica se o banco de dados está aberto
+        return;
+    }
+
+    const transaction = db.transaction(["fruits"], "readonly"); // Transação de leitura
+    const fruitStore = transaction.objectStore("fruits"); // Object store de frutas
+    const index = fruitStore.index("name"); // Índice para ordenação por nome
+
+    const tableBody = document.getElementById("fruitTableBody"); // Corpo da tabela
     tableBody.innerHTML = ""; // Limpa a tabela antes de adicionar dados
 
-    request.onsuccess = function(event) {
-        const cursor = event.target.result; // Obtém o cursor
-        
+    const request = index.openCursor(); // Usa o índice para abrir um cursor em ordem alfabética
+
+    request.onsuccess = function (event) {
+        const cursor = event.target.result;
         if (cursor) {
-            const fruit = cursor.value; // Fruta do cursor
-            const row = document.createElement('tr'); // Cria uma nova linha para a tabela
+            const fruit = cursor.value;
+            const row = document.createElement("tr"); // Cria uma nova linha para a tabela
+
+            // Ordem das colunas: imagem, nome, PLU
             row.innerHTML = `
-                <td>${fruit.name}</td> <!-- Nome da fruta -->
-                <td>${fruit.plu}</td> <!-- PLU -->
-                <td><img src="${fruit.image}" alt="${fruit.name}" width="50" /></td> <!-- Imagem -->
+                <td><img src="${fruit.image}" alt="${fruit.name}" width="50" /></td>
+                <td>${fruit.name}</td>
+                <td>${fruit.plu}</td>
             `;
-            tableBody.appendChild(row); // Adiciona a linha ao corpo da tabela
+
+            tableBody.appendChild(row); // Adiciona a linha à tabela
             cursor.continue(); // Continua para o próximo item
-        } else {
-            console.log("Nenhuma fruta encontrada no banco de dados.");
         }
     };
 
-    request.onerror = function(event) {
-        console.error("Erro ao carregar a tabela:", event.target.errorCode); // Tratamento de erro
+    request.onerror = function (event) {
+        console.error("Erro ao carregar a tabela:", event.target.errorCode); // Relata o erro
     };
 }
+
+// Chama a função para carregar a tabela após a página carregar
+window.addEventListener("load", loadFruitTable); // Carrega a tabela quando a página é carregada
+
 
 
 
@@ -259,6 +268,20 @@ document.getElementById('cancelEdit').addEventListener('click', closeEditModal);
 document.getElementById('saveFruit').addEventListener('click', saveFruit);
 document.getElementById('deleteFruit').addEventListener('click', deleteFruit);
 document.getElementById('printPage').addEventListener('click', printPage);
+document.getElementById("sortByName").addEventListener("click", function () {
+    loadFruitTable(); // Recarrega a tabela para ordenar por nome
+});
+
 
 // Inicializar o IndexedDB ao carregar a página
-window.addEventListener('load', initDB);
+//window.addEventListener('load', initDB);
+
+window.addEventListener("load", function () {
+    if (db) {
+        loadFruitTable(); // Carrega a tabela se o IndexedDB estiver aberto
+    } else {
+        console.error("IndexedDB ainda não foi aberto. Certifique-se de que a abertura ocorreu com sucesso.");
+    }
+});
+
+
