@@ -5,7 +5,7 @@ const request = indexedDB.open("fruitDB", 1); // Banco de dados "FruitDB" na ver
 
 request.onupgradeneeded = function (event) {
     db = event.target.result; // Obter o banco de dados
-    const fruitStore = db.createObjectStore("fruits", { keyPath: "plu" }); // Object store para "fruits"
+    const fruitStore = db.createObjectStore("fruits", { keyPath: "name" }); // Object store para "fruits"
     fruitStore.createIndex("name", "name", { unique: true }); // Índice para ordenação por nome
     fruitStore.createIndex("plu", "plu", { unique: false }); // Índice para ordenação por PLU
 };
