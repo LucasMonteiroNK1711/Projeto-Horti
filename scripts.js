@@ -277,7 +277,7 @@ document.getElementById("sortByName").addEventListener("click", function () {
 //window.addEventListener('load', initDB);
 
 window.addEventListener("load", function () {
-    if (db) {
+    if (!db) {
         loadFruitTable(); // Carrega a tabela se o IndexedDB estiver aberto
     } else {
         console.error("IndexedDB ainda não foi aberto. Certifique-se de que a abertura ocorreu com sucesso.");
