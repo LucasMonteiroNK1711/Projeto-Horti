@@ -1,7 +1,7 @@
 let db; // Variável global para armazenar a referência ao banco de dados
 
 // Abrir o IndexedDB
-const request = indexedDB.open("FruitDB", 1); // Banco de dados "FruitDB" na versão 1
+const request = indexedDB.open("fruitDB", 1); // Banco de dados "FruitDB" na versão 1
 
 request.onupgradeneeded = function (event) {
     db = event.target.result; // Obter o banco de dados
